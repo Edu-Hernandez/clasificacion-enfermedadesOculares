@@ -1,0 +1,109 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="keywords" content="python, clasification, ucv, intelligent, inception, google, algorithm">
+    <meta name="description" content="Image classification using Google's inception v3 algorithm">
+    <meta name="author" content="Yannick F. & Alan H.">
+    <!-- <meta http-equiv="refresh" content="30"> -->
+
+    <title>Clasificacion de Imagenes</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet"
+        integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH" crossorigin="anonymous">
+    <link rel="icon" href="./icon.ico" type="image/x-icon">
+</head>
+
+<body class="bg-dark">
+    <div class="container d-flex vh-100">
+        <div class="row justify-content-center align-self-center w-100">
+            <div class="col-12 col-md-6 col-lg-4 p-5 bg-light rounded-2 border border-success shadow-lg">
+                <form action="/classify" method="post" enctype="multipart/form-data">
+                    <h4 class="text-center text-dark mb-3">Clasificación de Imágenes</h4>
+                    <div class="mb-3 text-center">
+                        {% if img_path %}
+                        <img id="imgPreview" src="{{ img_path }}" class="img-fluid rounded" alt="Imagen Clasificada"
+                            width="300px">
+                        {% else %}
+                        <img id="imgPreview" src="../static/uploads/thumbnail.svg" class="img-fluid rounded" alt="Imagen Placeholder"
+                            width="300px">
+                        {% endif %}
+                    </div>
+                    <div class="flex gap-2 mb-3 text-center">
+                        <span class="badge rounded-pill bg-success text-light">Python</span>
+                        <span class="badge rounded-pill bg-primary text-light">Inception-v3</span>
+                        <span class="badge rounded-pill bg-danger text-light">Clasificación</span>
+                    </div>
+                    <div class="alert alert-success text-center" role="alert">
+                        Para visualizar la clasificación es necesario subir una imagen.
+                    </div>
+                    <div class="mb-3">
+                        <label for="formFile" class="form-label fw-bold text-dark">Subir Imágenes</label>
+                        <input class="form-control" type="file" id="formFile" name="img">
+                    </div>
+                    <div class="mb-3">
+                        <label for="classification" class="form-label fw-bold text-dark">Clasificación</label>
+                        <input class="form-control" type="text" id="classification" value="{{ classification }}"
+                            aria-label="Clasificación" readonly>
+                    </div>
+                    <button type="submit" class="btn btn-primary d-block mb-3" style="width: 100%;" id="btnClasificar"
+                        name="btnClasificacion">Clasificar</button>
+
+                    <button type="button" class="btn btn-secondary d-block mb-3" style="width: 100%;" id="btnLimpiar"
+                        onclick="limpiarDatos()">Limpiar Resultados</button>
+
+                </form>
+                <a type="button" class="btn btn-success d-block mb-3" id="liveToastBtn" data-bs-toggle="toast"
+                    href="#liveToast" role="button" aria-expanded="false" aria-controls="liveToast">¿Cómo usar?</a>
+            </div>
+        </div>
+    </div>
+    <!-- ¿Cómo usar? -->
+    <div class="toast-container position-fixed bottom-0 end-0 p-3">
+        <div id="liveToast" class="toast" role="alert" aria-live="assertive" aria-atomic="true">
+            <div class="toast-header">
+                <img src="file.ico" class="rounded me-2" alt="Icono" width="15px">
+                <strong class="me-auto">Inception-v3</strong>
+                <small>Python</small>
+                <button type="button" class="btn-close" data-bs-dismiss="toast" aria-label="Cerrar"></button>
+            </div>
+            <div class="toast-body">
+                <ol class="list-group">
+                    <li class="list-group-item list-group-item-success">1. Subir una imagen</li>
+                    <li class="list-group-item list-group-item-success">2. Presionar el botón clasificar</li>
+                    <li class="list-group-item list-group-item-success">3. Esperar el resultado</li>
+                </ol>
+            </div>
+        </div>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"
+        integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz"
+        crossorigin="anonymous"></script>
+        
+    <!-- <script src="/index.js"></script> -->
+    <script src="https://unpkg.com/vue@3/dist/vue.global.js"></script>
+
+    <script>
+        const toastTrigger = document.getElementById('liveToastBtn')
+        const toastLiveExample = document.getElementById('liveToast')
+
+        if (toastTrigger) {
+            const toastBootstrap = bootstrap.Toast.getOrCreateInstance(toastLiveExample)
+            toastTrigger.addEventListener('click', () => {
+                toastBootstrap.show()
+            })
+        }
+
+        function limpiarDatos() {
+            // Limpia la imagen mostrada y el campo de clasificación
+            //document.getElementById("imgPreview").src = "../static/uploads/thumbnail.svg"; // Cambia a tu imagen placeholder
+            document.getElementById("classification").value = ""; // Limpia el campo de clasificación
+            document.getElementById("btnLimpiar").style.display = "none"; // Oculta el botón de limpiar
+        }
+    </script>
+
+</body>
+
+</html>
